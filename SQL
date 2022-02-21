@@ -1,0 +1,169 @@
+create table endereco(
+    IDENDERECO int primary key,
+    rua varchar not null,
+    bairro varchar not null,
+    cidade varchar not null,
+    estado char(2) not null,
+    ID_CLIENTE int unique ,
+    foreign key (ID_CLIENTE) references clientes (IDCLIENTE)
+);
+insert into endereco values(1,'RUA ANTONIO SA ','CENTRO','BELO HORIZONTE','MG',4);
+insert into endereco values(2,'RUA CAPITAO HERMES ','CENTRO','RIO DE JANEIRO','RJ',1);
+insert into endereco values(3,'RUA PRES VARGAS ','JARDINS','SAO PAULO','SP',3);
+insert into endereco values(4,'RUA ALFANDEGA ','ESTACIO','RIO DE JANEIRO','RJ',2);
+insert into endereco values(5,'RUA DO OUVIDOR ','FLAMENGO','RIO DE JANEIRO','RJ',5);
+insert into endereco values(6,'RUA URUGUAIANA ','CENTRO','VITORIA','ES',6);
+insert into endereco values(7,'RUA PRESIDENTE VARGAS','CENTRO','RIO DE JANEIRO','RJ',7);
+insert into endereco values(8,'RUA PAULO GUSTAVO','CENTRO','RIO DE JANEIRO','RJ',8);
+insert into endereco values(9,'RUA JOSÉ DE ABREU','PAULISTA','SAO PAULO','SP',9);
+insert into endereco values(10,'RUA VERDANSK ','SUMMER','RIO DE JANEIRO','RJ',10);
+select * from endereco;
+create table telefone(
+   IDTELEFONE int primary key,
+   tipo varchar not null,
+   numero varchar not null,
+   ID_CLIENTE int,
+   foreign key (ID_CLIENTE) references clientes(IDCLIENTE)
+);
+insert into telefone values(1,'Cel','9 9920-7835',5);
+insert into telefone values(2,'Res','9 8860-5564',2);
+insert into telefone values(3,'Com','9 7750-5623',3);
+insert into telefone values(4,'Cel','9 8954-1234',4);
+insert into telefone values(5,'Res','9 9920-7835',2);
+insert into telefone values(6,'Com','9 9920-7835',3);
+insert into telefone values(7,'Res','9 8856-6543',7);
+insert into telefone values(8,'Com','9 1023-0065',8);
+insert into telefone values(9,'Cel','9 0001-0582',9);
+insert into telefone values(10,'Res','9 1023-0065',10);
+select * from telefone;
+select count(*) as Tabela_De_Clientes from clientes;
+select nome , sexo , bairro , cidade from clientes,endereco
+where IDCLIENTE=ID_CLIENTE and sexo='F';
+select nome , sexo , bairro , cidade
+from clientes
+inner join endereco
+on IDCLIENTE=ID_CLIENTE
+where sexo='F';
+select nome , sexo , email , tipo,numero
+from clientes
+inner join telefone
+on IDCLIENTE=ID_CLIENTE;
+select bairro , cidade , tipo , numero
+from endereco
+inner join telefone
+on endereco.ID_CLIENTE=telefone.ID_CLIENTE;
+select nome , sexo , email , tipo , numero
+from clientes
+inner join telefone
+on clientes.IDCLIENTE=telefone.ID_CLIENTE;
+select clientes.nome , clientes.sexo , endereco.bairro , telefone.tipo , telefone.numero , endereco.cidade from clientes
+inner join endereco
+on clientes.IDCLIENTE=endereco.ID_CLIENTE
+inner join telefone
+on clientes.IDCLIENTE=telefone.ID_CLIENTE;
+select C.nome , C.sexo , E.bairro , E.cidade , T.tipo , T.numero
+from clientes C
+inner join endereco E
+on C.IDCLIENTE=E.ID_CLIENTE
+inner join telefone T
+on C.IDCLIENTE=T.ID_CLIENTE;
+select C.nome , C.sexo , T.tipo , E.cidade , T.numero from clientes C
+inner join telefone T
+on C.IDCLIENTE=T.ID_CLIENTE
+inner join endereco E
+on C.IDCLIENTE=E.ID_CLIENTE
+order by C.nome;
+select C.nome , C.sexo, T.tipo , E.cidade , T.numero from clientes C
+inner join telefone T
+on C.IDCLIENTE=T.ID_CLIENTE
+inner join endereco E
+on C.IDCLIENTE=E.ID_CLIENTE
+order by C.nome;
+select C.nome,C.IDCLIENTE,E.cidade from clientes C
+inner join endereco E
+on C.IDCLIENTE = E.ID_CLIENTE
+group by C.IDCLIENTE,C.nome,E.ID_CLIENTE,E.cidade
+order by C.nome;
+select C.nome,E.cidade from clientes C
+inner join endereco E
+on C.IDCLIENTE = E.ID_CLIENTE
+group by C.IDCLIENTE,C.nome,E.cidade,E.ID_CLIENTE
+order by C.nome;
+select C.nome,C.sexo,E.cidade,E.bairro,E.estado,T.tipo,T.numero from clientes C
+inner join endereco E
+on C.IDCLIENTE=E.ID_CLIENTE
+inner join telefone T
+on C.IDCLIENTE = T.ID_CLIENTE
+group by C.IDCLIENTE,C.nome,C.sexo,E.ID_CLIENTE,E.bairro,E.cidade,E.estado,T.ID_CLIENTE,T.tipo,T.numero
+order by C.nome;
+select distinct C.nome,C.sexo,E.cidade,E.bairro,E.estado,T.tipo,T.numero from clientes C
+inner join endereco E
+on C.IDCLIENTE=E.ID_CLIENTE
+inner join telefone T
+on C.IDCLIENTE = T.ID_CLIENTE
+order by C.nome;
+select * from clientes C
+inner join endereco E
+on C.IDCLIENTE=E.ID_CLIENTE
+inner join telefone T
+on C.IDCLIENTE=T.ID_CLIENTE;
+select C.nome , C.sexo , C.email,C.CPF,E.rua,E.bairro,E.cidade,E.estado,T.tipo,T.numero from clientes C
+inner join endereco E
+on C.IDCLIENTE=E.ID_CLIENTE
+inner join telefone T
+on C.IDCLIENTE=T.ID_CLIENTE;
+select C.nome , C.sexo , C.email,C.CPF,E.rua,E.bairro,E.cidade,E.estado,T.tipo,T.numero from clientes C
+inner join endereco E
+on C.IDCLIENTE=E.ID_CLIENTE
+inner join telefone T
+on C.IDCLIENTE=T.ID_CLIENTE
+where C.sexo='M';
+select C.nome , C.sexo , C.email,C.CPF,E.rua,E.bairro,E.cidade,E.estado,T.tipo,T.numero from clientes C
+inner join endereco E
+on C.IDCLIENTE=E.ID_CLIENTE
+inner join telefone T
+on C.IDCLIENTE=T.ID_CLIENTE
+where sexo='F';
+select C.sexo , count(*) from clientes C
+inner join endereco e on C.IDCLIENTE = e.ID_CLIENTE
+inner join telefone t on C.IDCLIENTE = t.ID_CLIENTE
+group by C.sexo;
+
+select count(*) as quantidade,sexo from clientes group by sexo;
+select sexo , count(*) from clientes group by sexo;
+select C.IDCLIENTE,C.email,C.nome,C.sexo ,e.bairro,e.cidade from clientes C
+inner join endereco e on C.IDCLIENTE = e.ID_CLIENTE
+inner join telefone t on C.IDCLIENTE = t.ID_CLIENTE
+where sexo='F'
+and bairro='CENTRO' and cidade='RIO DE JANEIRO'
+and t.tipo in ('Res','Com');
+select C.nome , C.email , T.numero as CELULARCLIENTE from clientes C
+inner join telefone T
+on C.IDCLIENTE=T.ID_CLIENTE
+inner join endereco E
+on C.IDCLIENTE=E.ID_CLIENTE
+where E.estado='RJ' and T.tipo='Cel';
+select C.nome,C.email , T.numero from clientes C
+inner join telefone T
+on C.IDCLIENTE=T.ID_CLIENTE
+inner join endereco E
+on C.IDCLIENTE=E.ID_CLIENTE;
+select C.nome , C.sexo , C.email ,T.tipo , T.numero , E.bairro , E.cidade , E.estado from clientes C
+inner join endereco E
+on C.IDCLIENTE=E.ID_CLIENTE
+inner join telefone T
+on C.IDCLIENTE=T.ID_CLIENTE;
+
+/* VIEW */
+create view Relatorio as
+select C.nome , C.sexo , C.email ,T.tipo , T.numero , E.bairro , E.cidade , E.estado from clientes C
+inner join endereco E
+on C.IDCLIENTE=E.ID_CLIENTE
+inner join telefone T
+on C.IDCLIENTE=T.ID_CLIENTE;
+select C.nome , C.sexo , C.email ,T.tipo , T.numero , E.bairro , E.cidade , E.estado from clientes C
+inner join endereco E
+on C.IDCLIENTE=E.ID_CLIENTE
+inner join telefone T
+on C.IDCLIENTE=T.ID_CLIENTE
+order by 1;
